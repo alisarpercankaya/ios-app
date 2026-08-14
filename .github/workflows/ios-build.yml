@@ -16,6 +16,11 @@ on:
 
 env:
   GODOT_VERSION: 4.7.1-stable
+  # Godot's own export_templates/ directory naming uses dots throughout
+  # (e.g. "4.7.1.stable"), which differs from the hyphen used in the
+  # release tag/download filenames (e.g. "4.7.1-stable") - these are two
+  # different strings that happen to look alike.
+  GODOT_TEMPLATE_VERSION: 4.7.1.stable
 
 jobs:
   build-ios:
@@ -35,7 +40,7 @@ jobs:
         run: |
           curl -sL -o templates.tpz \
             "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz"
-          TEMPLATE_DIR="$HOME/Library/Application Support/Godot/export_templates/${GODOT_VERSION}"
+          TEMPLATE_DIR="$HOME/Library/Application Support/Godot/export_templates/${GODOT_TEMPLATE_VERSION}"
           mkdir -p "$TEMPLATE_DIR"
           unzip -q templates.tpz -d /tmp/templates
           cp -R /tmp/templates/templates/* "$TEMPLATE_DIR"/
