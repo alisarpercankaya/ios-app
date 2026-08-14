@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"diablo_pgn"
+display_name = "Diablo PGN"
+rarity = 4
+top_speed_mult = 1.32
+acceleration_mult = 1.28
+handling_mult = 1.25
+unlock_cost = 20000
+body_color = Color(0.85,0.0,0.0, 1)

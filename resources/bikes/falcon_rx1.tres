@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"falcon_rx1"
+display_name = "Falcon RX1"
+rarity = 0
+top_speed_mult = 0.90
+acceleration_mult = 0.90
+handling_mult = 0.95
+unlock_cost = 500
+body_color = Color(0.8,0.2,0.2, 1)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"roadking_hd1"
+display_name = "Roadking HD1"
+rarity = 4
+top_speed_mult = 1.30
+acceleration_mult = 1.22
+handling_mult = 1.15
+unlock_cost = 35000
+body_color = Color(0.9,0.65,0.05, 1)

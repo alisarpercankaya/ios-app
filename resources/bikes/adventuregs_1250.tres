@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"adventuregs_1250"
+display_name = "AdventureGS 1250"
+rarity = 2
+top_speed_mult = 1.07
+acceleration_mult = 1.02
+handling_mult = 1.08
+unlock_cost = 6500
+body_color = Color(0.6,0.1,0.15, 1)

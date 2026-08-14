@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"thunder_s1k"
+display_name = "Thunder S1K"
+rarity = 3
+top_speed_mult = 1.22
+acceleration_mult = 1.20
+handling_mult = 1.15
+unlock_cost = 10000
+body_color = Color(0.1,0.3,0.9, 1)

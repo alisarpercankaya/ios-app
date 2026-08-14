@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"trident_st3"
+display_name = "Trident ST3"
+rarity = 2
+top_speed_mult = 1.08
+acceleration_mult = 1.10
+handling_mult = 1.10
+unlock_cost = 5000
+body_color = Color(0.9,0.15,0.15, 1)

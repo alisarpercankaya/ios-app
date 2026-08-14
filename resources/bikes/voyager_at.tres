@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"voyager_at"
+display_name = "Voyager AT"
+rarity = 2
+top_speed_mult = 1.05
+acceleration_mult = 1.05
+handling_mult = 1.05
+unlock_cost = 6000
+body_color = Color(0.2,0.5,0.8, 1)

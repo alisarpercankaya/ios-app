@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="BoxMesh" id="BoxMesh_road"]
+size = Vector3(10, 0.2, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_road"]
+size = Vector3(10, 0.2, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_road"]
+albedo_color = Color(0.18, 0.18, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stripe"]
+size = Vector3(0.15, 0.06, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stripe"]
+albedo_color = Color(0.9, 0.9, 0.85, 1)
+
+[node name="RoadSegment" type="StaticBody3D"]
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_road")
+surface_material_override/0 = SubResource("StandardMaterial3D_road")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_road")
+
+[node name="StripeLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.03, 0)
+mesh = SubResource("BoxMesh_stripe")
+surface_material_override/0 = SubResource("StandardMaterial3D_stripe")
+
+[node name="StripeCenter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+mesh = SubResource("BoxMesh_stripe")
+surface_material_override/0 = SubResource("StandardMaterial3D_stripe")
+
+[node name="StripeRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.03, 0)
+mesh = SubResource("BoxMesh_stripe")
+surface_material_override/0 = SubResource("StandardMaterial3D_stripe")

@@ -1,0 +1,73 @@
+name: iOS Build (unsigned)
+
+# Builds an unsigned .ipa on a macOS runner (Xcode is only available on macOS,
+# so this can't run on Windows). Sideload the artifact to your iPhone with
+# AltServer (on your PC) + AltStore (on the phone) using your free Apple ID -
+# no paid Apple Developer membership, GitHub secret, or Team ID needed. The
+# Team ID field in export_presets.cfg is a placeholder Godot requires to be
+# non-empty; it's discarded since codesign/codesign=0 skips Xcode signing
+# entirely, and AltServer re-signs the .ipa from scratch using your real
+# Apple ID's own team when it installs to your phone.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+env:
+  GODOT_VERSION: 4.7.1-stable
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Godot editor (macOS)
+        run: |
+          curl -sL -o godot.zip \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_macos.universal.zip"
+          unzip -q godot.zip
+          chmod +x Godot.app/Contents/MacOS/Godot
+          echo "GODOT_BIN=$(pwd)/Godot.app/Contents/MacOS/Godot" >> "$GITHUB_ENV"
+
+      - name: Download export templates
+        run: |
+          curl -sL -o templates.tpz \
+            "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz"
+          TEMPLATE_DIR="$HOME/Library/Application Support/Godot/export_templates/${GODOT_VERSION}"
+          mkdir -p "$TEMPLATE_DIR"
+          unzip -q templates.tpz -d /tmp/templates
+          cp -R /tmp/templates/templates/* "$TEMPLATE_DIR"/
+
+      - name: Export Xcode project from Godot
+        run: |
+          mkdir -p build/ios
+          "$GODOT_BIN" --headless --export-release "iOS" build/ios/TrafficDodger.ipa
+
+      - name: Archive with Xcode (unsigned)
+        run: |
+          XCODEPROJ=$(find build/ios -maxdepth 1 -name "*.xcodeproj" | head -n1)
+          echo "Using Xcode project: $XCODEPROJ"
+          xcodebuild -project "$XCODEPROJ" \
+            -scheme "$(basename "$XCODEPROJ" .xcodeproj)" \
+            -configuration Release \
+            -archivePath build/ios/game.xcarchive \
+            -sdk iphoneos \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            archive
+
+      - name: Package unsigned .ipa
+        run: |
+          APP_PATH=$(find build/ios/game.xcarchive/Products/Applications -maxdepth 1 -name "*.app" | head -n1)
+          mkdir -p build/ipa_root/Payload
+          cp -R "$APP_PATH" build/ipa_root/Payload/
+          cd build/ipa_root
+          zip -qr ../TrafficDodger-unsigned.ipa Payload
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TrafficDodger-unsigned-ipa
+          path: build/TrafficDodger-unsigned.ipa
+          retention-days: 14

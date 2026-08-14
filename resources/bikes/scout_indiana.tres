@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"scout_indiana"
+display_name = "Scout Indiana"
+rarity = 1
+top_speed_mult = 0.93
+acceleration_mult = 0.92
+handling_mult = 0.95
+unlock_cost = 3000
+body_color = Color(0.55,0.35,0.1, 1)

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BikeData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/bike_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"tuono_storm"
+display_name = "Tuono Storm"
+rarity = 3
+top_speed_mult = 1.24
+acceleration_mult = 1.20
+handling_mult = 1.18
+unlock_cost = 14500
+body_color = Color(0.95,0.35,0.0, 1)

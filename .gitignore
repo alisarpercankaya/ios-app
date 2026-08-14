@@ -1,0 +1,19 @@
+# Godot editor cache/import data (regenerated automatically)
+.godot/
+
+# Local Godot editor binary (downloaded via tools/, not project source)
+tools/
+
+# Build output
+build/
+
+# Godot mono-specific ignores (unused here, kept for safety)
+.mono/
+data_*/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Claude Code harness state
+.claude/

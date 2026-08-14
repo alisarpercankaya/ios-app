@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player_bike.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/camera/camera_rig.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/road_segment.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/traffic_vehicle.tscn" id="5"]
+[ext_resource type="Script" path="res://scripts/road/road_manager.gd" id="6"]
+[ext_resource type="Script" path="res://scripts/traffic/traffic_manager.gd" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/ui/touch_controls.tscn" id="8"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.55, 0.75, 0.95, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.65, 0.7, 1)
+ambient_light_energy = 1.0
+
+[node name="Gameplay" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8, -0.4, 0.45, 0, 0.75, 0.66, -0.6, -0.53, 0.6, 0, 10, 0)
+shadow_enabled = true
+
+[node name="RoadManager" type="Node3D" parent="."]
+script = ExtResource("6")
+segment_scene = ExtResource("4")
+
+[node name="TrafficManager" type="Node3D" parent="."]
+script = ExtResource("7")
+vehicle_scene = ExtResource("5")
+
+[node name="PlayerBike" parent="." instance=ExtResource("1")]
+
+[node name="CameraRig" parent="." instance=ExtResource("2")]
+target_path = NodePath("../PlayerBike")
+
+[node name="HUD" parent="." instance=ExtResource("3")]
+
+[node name="TouchControls" parent="." instance=ExtResource("8")]
