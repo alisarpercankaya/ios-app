@@ -3,11 +3,19 @@ name: iOS Build (unsigned)
 # Builds an unsigned .ipa on a macOS runner (Xcode is only available on macOS,
 # so this can't run on Windows). Sideload the artifact to your iPhone with
 # AltServer (on your PC) + AltStore (on the phone) using your free Apple ID -
-# no paid Apple Developer membership, GitHub secret, or Team ID needed. The
-# Team ID field in export_presets.cfg is a placeholder Godot requires to be
-# non-empty; it's discarded since codesign/codesign=0 skips Xcode signing
-# entirely, and AltServer re-signs the .ipa from scratch using your real
-# Apple ID's own team when it installs to your phone.
+# no paid Apple Developer membership, GitHub secret, or Team ID needed.
+#
+# Signing is skipped in two places, and both are required:
+#   1. export_presets.cfg sets application/export_project_only=true, so Godot
+#      emits the Xcode project and stops. Left to itself Godot runs its own
+#      `xcodebuild archive`, which always signs and fails on CI with no Apple
+#      account attached to the runner.
+#   2. The archive step below passes the CODE_SIGN_* overrides explicitly,
+#      which beat whatever identity and team Godot wrote into the project.
+#
+# The Team ID in export_presets.cfg is therefore an inert placeholder Godot
+# requires to be non-empty. AltServer re-signs the .ipa from scratch using
+# your real Apple ID's own team when it installs to your phone.
 
 on:
   workflow_dispatch:
@@ -53,13 +61,25 @@ jobs:
       - name: Archive with Xcode (unsigned)
         run: |
           XCODEPROJ=$(find build/ios -maxdepth 1 -name "*.xcodeproj" | head -n1)
+          if [ -z "$XCODEPROJ" ]; then
+            echo "::error::Godot produced no .xcodeproj in build/ios - check the export step above"
+            ls -la build/ios
+            exit 1
+          fi
           echo "Using Xcode project: $XCODEPROJ"
           xcodebuild -project "$XCODEPROJ" \
             -scheme "$(basename "$XCODEPROJ" .xcodeproj)" \
             -configuration Release \
             -archivePath build/ios/game.xcarchive \
+            -destination 'generic/platform=iOS' \
             -sdk iphoneos \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS="" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="" \
+            PROVISIONING_PROFILE_SPECIFIER="" \
             archive
 
       - name: Package unsigned .ipa
